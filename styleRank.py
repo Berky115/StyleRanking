@@ -7,7 +7,6 @@ class Rank(object):
         self.progression_count = progression_count
         self.orb_multiplier = orb_multiplier
 
-from enum import Enum
 class Ranks(object):
     def __init__(self):
         self.NONE = Rank("","",0,"",1000,1)
