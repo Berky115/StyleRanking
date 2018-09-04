@@ -1,6 +1,7 @@
 import threading
 import time
 
+
 class Rank(object):
     def __init__(self, name, glyph, priority, activation_sound, progression_count, orb_multiplier):
         self.name = name
@@ -9,6 +10,7 @@ class Rank(object):
         self.activation_sound = activation_sound
         self.progression_count = progression_count
         self.orb_multiplier = orb_multiplier
+
 
 class Ranks(object):
     def __init__(self):
@@ -32,13 +34,14 @@ class Ranks(object):
             7 : self.SSS
         }
 
-    def getRank(self, priority):
+    def get_rank(self, priority):
         return self.rank_list[priority]
+
 
 class RankService(object):
     def __init__(self, rank_list):
         self.rank_List = rank_list
-        self.current_rank = self.rank_List.getRank(0)
+        self.current_rank = self.rank_List.get_rank(0)
         self.max_progression = self.current_rank.progression_count
         self.current_progression = 10
         self.orb_multiplier = self.current_rank.orb_multiplier
@@ -53,39 +56,39 @@ class RankService(object):
             self.current_progression -= self.decreaseValue;
 
         if self.current_progression < 0 and self.current_rank.priority > 0:
-            self.rankDown()
+            self.rank_down()
 
         if self.current_progression > self.max_progression and self.current_rank.priority <7:
-            self.rankUp()
+            self.rank_up()
 
-
-    def applyPoints(self, new_points):
+    def apply_points(self, new_points):
         self.current_progression += new_points * self.orb_multiplier
         if self.current_progression > self.max_progression:
-            self.rankUp()
+            self.rank_up()
         elif self.current_progression < 0:
-            self.rankDown()
+            self.rank_down()
 
-    def rankUp(self):
+    def rank_up(self):
         self.current_progression = self.current_progression - self.max_progression
-        self.current_rank = self.rank_List.getRank(self.current_rank.priority + 1)
+        self.current_rank = self.rank_List.get_rank(self.current_rank.priority + 1)
         self.max_progression = self.current_rank.progression_count
         self.orb_multiplier = self.current_rank.orb_multiplier
         #Debug:
         print(self.current_rank.activation_sound)
 
-    def rankDown(self):
-        self.current_rank = self.rank_List.getRank(self.current_rank.priority - 1)
+    def rank_down(self):
+        self.current_rank = self.rank_List.get_rank(self.current_rank.priority - 1)
         self.max_progression = self.current_rank.progression_count
         self.orb_multiplier = self.current_rank.orb_multiplier
         self.current_progression = self.max_progression // 2
         #Debug:
         print(self.current_rank.activation_sound)
 
-    def setRank(self, rank):
+    def set_rank(self, rank):
         self.current_rank = rank
         self.max_progression = rank.progression_count
         self.orb_multiplier = rank.orb_multiplier
+
 
 class GameLoop(threading.Thread):
     def __init__(self,rank_service):
@@ -98,3 +101,5 @@ class GameLoop(threading.Thread):
         while self.rank_service_running:
             time.sleep(1)
             self.rank_service.polling_value()
+
+
