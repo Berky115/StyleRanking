@@ -1,7 +1,7 @@
 import unittest
 import time
 
-from styleRank import *
+from StyleRank import *
 
 class TestRankFunctionality(unittest.TestCase):
     def test_can_make_rank(self):
@@ -17,13 +17,13 @@ class TestRankFunctionality(unittest.TestCase):
 class TestRankService(unittest.TestCase):
     def test_rank_up(self):
         test_rank = Rank("Damnation", "D", 1, "D-d-d-damn!.mp3" , 1000, .1)
-        rank_service = RankService(Ranks())
+        rank_service = RankService(Ranks(),SoundService())
         rank_service.current_progression = 999
         rank_service.apply_points(100)
         self.assertEqual(rank_service.current_rank.name == test_rank.name,True)
 
     def test_rank_down(self):
-        rank_service = RankService(Ranks())
+        rank_service = RankService(Ranks(),SoundService())
         ranks = Ranks()
         rank_service.set_rank(ranks.C)
         rank_service.current_progression = 1
@@ -33,7 +33,7 @@ class TestRankService(unittest.TestCase):
 
 class TestThreadBehavior(unittest.TestCase):
     def test_threading_behavior(self):
-        game_loop = GameLoop(RankService(Ranks()))
+        game_loop = GameLoop(RankService(Ranks(),SoundService()))
         game_loop.rank_service.decreaseValue = 50
         ranks = Ranks()
         game_loop.rank_service.set_rank(ranks.S)

@@ -1,6 +1,6 @@
 import threading
 import time
-
+import pyglet
 
 class Rank(object):
     def __init__(self, name, glyph, priority, activation_sound, progression_count, orb_multiplier):
@@ -39,13 +39,14 @@ class Ranks(object):
 
 
 class RankService(object):
-    def __init__(self, rank_list):
+    def __init__(self, rank_list, sound_service):
         self.rank_List = rank_list
         self.current_rank = self.rank_List.get_rank(0)
         self.max_progression = self.current_rank.progression_count
         self.current_progression = 10
         self.orb_multiplier = self.current_rank.orb_multiplier
-        self.decreaseValue = 1;
+        self.decreaseValue = 1
+        self.sound_service = sound_service
 
     def polling_value(self):
         #Debug:
@@ -57,9 +58,11 @@ class RankService(object):
 
         if self.current_progression < 0 and self.current_rank.priority > 0:
             self.rank_down()
+            self.sound_service.play_sound()
 
         if self.current_progression > self.max_progression and self.current_rank.priority <7:
             self.rank_up()
+            self.sound_service.play_sound()
 
     def apply_points(self, new_points):
         self.current_progression += new_points * self.orb_multiplier
@@ -101,5 +104,13 @@ class GameLoop(threading.Thread):
         while self.rank_service_running:
             time.sleep(1)
             self.rank_service.polling_value()
+
+class SoundService(object):
+    def __init__(self):
+        self.title = "pylet"
+        self.rank_sound = pyglet.resource.media('rank_change.wav',streaming=False)
+
+    def play_sound(self):
+        self.rank_sound.play()
 
 
