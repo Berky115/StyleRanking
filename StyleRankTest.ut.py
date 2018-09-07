@@ -31,6 +31,16 @@ class TestRankService(unittest.TestCase):
         self.assertEqual(rank_service.current_rank.name == ranks.D.name,True)
 
 
+class TestSoundBehavior(unittest.TestCase):
+    def test_sound_behavior(self):
+        rank_service = RankService(Ranks(), SoundService())
+        ranks = Ranks()
+        rank_service.set_rank(ranks.S)
+        rank_service.current_progression = 1
+        rank_service.apply_points(-100)
+        self.assertEquals(rank_service.current_rank.activation_sound == "A.wav", True)
+
+
 class TestThreadBehavior(unittest.TestCase):
     def test_threading_behavior(self):
         game_loop = GameLoop(RankService(Ranks(),SoundService()))

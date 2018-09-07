@@ -15,13 +15,13 @@ class Rank(object):
 class Ranks(object):
     def __init__(self):
         self.NONE = Rank("","",0,"",1000,1)
-        self.D = Rank("Damnation", "D", 1, "D-d-d-damn!.mp3" , 1000, 1.25)
-        self.C = Rank("Crazy!", "C", 2, "CRAZY.mp3" , 1300, 1.5)
-        self.B = Rank("Bravo!", "B", 3, "Bravo.mp3" , 1500, 1.75)
-        self.A = Rank("Anarchy!", "A", 4, "Anarchy.mp3" , 1700, 2)
-        self.S = Rank("Sensational!", "S", 5, "Sensational.mp3" , 2000, 2.25)
-        self.SS = Rank("Sexy Style!", "SS", 6, "SSensational.mp3" , 3000, 2.5)
-        self.SSS = Rank("Sweet Son of Sparda!", "SSS", 7, "SSSensational.mp3" , 4000, 3)
+        self.D = Rank("Damnation", "D", 1, "D.wav" , 1000, 1.25)
+        self.C = Rank("Crazy!", "C", 2, "C.wav", 1300, 1.5)
+        self.B = Rank("Bravo!", "B", 3, "B.wav", 1500, 1.75)
+        self.A = Rank("Anarchy!", "A", 4, "A.wav", 1700, 2)
+        self.S = Rank("Sensational!", "S", 5, "S.wav", 2000, 2.25)
+        self.SS = Rank("Sexy Style!", "SS", 6, "SS.wav", 3000, 2.5)
+        self.SSS = Rank("Sweet Son of Sparda!", "SSS.wav", 7, "SSS.mp3" , 4000, 3)
 
         self.rank_list = {
             0 : self.NONE,
@@ -58,11 +58,11 @@ class RankService(object):
 
         if self.current_progression < 0 and self.current_rank.priority > 0:
             self.rank_down()
-            self.sound_service.play_sound()
+            self.sound_service.play_sound(self.current_rank.activation_sound)
 
         if self.current_progression > self.max_progression and self.current_rank.priority <7:
             self.rank_up()
-            self.sound_service.play_sound()
+            self.sound_service.play_sound(self.current_rank.activation_sound)
 
     def apply_points(self, new_points):
         self.current_progression += new_points * self.orb_multiplier
@@ -107,10 +107,10 @@ class GameLoop(threading.Thread):
 
 class SoundService(object):
     def __init__(self):
-        self.title = "pylet"
-        self.rank_sound = pyglet.resource.media('rank_change.wav',streaming=False)
+        self.title = "pylet Sound System"
+        self.sound_effects_path = "Resources/Sound/SoundEffects/"
 
-    def play_sound(self):
-        self.rank_sound.play()
+    def play_sound(self, sound_name):
+        pyglet.resource.media(self.sound_effects_path + sound_name, streaming=False).play()
 
 
