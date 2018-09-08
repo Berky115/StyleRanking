@@ -82,15 +82,20 @@ class TestSoundBehavior(unittest.TestCase):
         rank_service.apply_points(-100)
         self.assertEquals(rank_service.current_rank.activation_sound == "A.wav", True)
 
-    def test_song_plays(self):
+    def test_song_plays_stops_does_not_interrupt_sound_effects(self):
         sound_service = SoundService()
-        sound_service.play_background_music("Devil_Trigger.wav")
-        self.assertEqual(sound_service.current_background_song, "Devil_Trigger.wav")
+        sound_service.play_background_music("default_song.wav")
+        self.assertEqual(sound_service.current_background_song, "default_song.wav")
+        sound_service.play_sound_effect("default.wav")
+        time.sleep(1)
+        sound_service.play_sound_effect("default.wav")
+        sound_service.stop_background_music()
+        self.assertEqual(sound_service.current_background_song, "NONE")
 
 class TestThreadBehavior(unittest.TestCase):
     def test_threading_behavior(self):
         game_loop = GameLoop(RankService(Ranks(),SoundService(), style_config()))
-        game_loop.rank_service.decreaseValue = 50
+        game_loop.rank_service.decreaseValue = 5000
         ranks = Ranks()
         game_loop.rank_service.set_rank(ranks.S)
         time.sleep(5)
