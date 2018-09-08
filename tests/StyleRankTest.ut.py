@@ -82,6 +82,10 @@ class TestSoundBehavior(unittest.TestCase):
         rank_service.apply_points(-100)
         self.assertEquals(rank_service.current_rank.activation_sound == "A.wav", True)
 
+    def test_song_plays(self):
+        sound_service = SoundService()
+        sound_service.play_background_music("Devil_Trigger.wav")
+        self.assertEqual(sound_service.current_background_song, "Devil_Trigger.wav")
 
 class TestThreadBehavior(unittest.TestCase):
     def test_threading_behavior(self):

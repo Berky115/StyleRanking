@@ -64,11 +64,11 @@ class RankService(object):
 
         if self.current_progression < 0 and self.current_rank.priority > 0:
             self.rank_down()
-            self.sound_service.play_sound(self.current_rank.activation_sound)
+            self.sound_service.play_sound_effect(self.current_rank.activation_sound)
 
         if self.current_progression > self.max_progression and self.current_rank.priority < 7:
             self.rank_up()
-            self.sound_service.play_sound(self.current_rank.activation_sound)
+            self.sound_service.play_sound_effect(self.current_rank.activation_sound)
 
     def apply_points(self, new_points):
         self.current_progression += new_points * self.risk_reward_multiplier
