@@ -2,6 +2,8 @@ import unittest
 import time
 
 from StyleRank import *
+from SoundService import *
+from GameLoop import *
 
 class TestRankFunctionality(unittest.TestCase):
     def test_can_make_rank(self):

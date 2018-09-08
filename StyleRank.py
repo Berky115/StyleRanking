@@ -1,7 +1,3 @@
-import threading
-import time
-import pyglet
-
 class Rank(object):
     def __init__(self, name, glyph, priority, activation_sound, progression_count, orb_multiplier):
         self.name = name
@@ -91,26 +87,5 @@ class RankService(object):
         self.current_rank = rank
         self.max_progression = rank.progression_count
         self.orb_multiplier = rank.orb_multiplier
-
-
-class GameLoop(threading.Thread):
-    def __init__(self,rank_service):
-        self.rank_service = rank_service
-        self.rank_service_running = True
-        threading.Thread.__init__(self)
-        self.start()
-
-    def run(self):
-        while self.rank_service_running:
-            time.sleep(1)
-            self.rank_service.polling_value()
-
-class SoundService(object):
-    def __init__(self):
-        self.title = "pylet Sound System"
-        self.sound_effects_path = "Resources/Sound/SoundEffects/"
-
-    def play_sound(self, sound_name):
-        pyglet.resource.media(self.sound_effects_path + sound_name, streaming=False).play()
 
 
