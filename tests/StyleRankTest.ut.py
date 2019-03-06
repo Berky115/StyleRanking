@@ -34,6 +34,7 @@ class TestRankService(unittest.TestCase):
         rank_service.current_progression = 1
         rank_service.apply_points(-100)
         self.assertEqual(rank_service.current_rank.name == ranks.D.name,True)
+        
     def test_continued_rank_up(self):
         rank_service = RankService(Ranks(), SoundService(), style_config())
         ranks = Ranks()
